@@ -1,0 +1,44 @@
+plugins {
+    id "com.dorongold.task-tree" version "1.2.2"
+}
+
+allprojects {
+    group "uchuhimo"
+    version "0.1"
+
+    repositories {
+        //mavenCentral()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+        jcenter()
+    }
+    
+    task wrapper(type: Wrapper) {
+        gradleVersion = "3.2"
+        distributionType = Wrapper.DistributionType.ALL
+    }
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "scala"
+
+    sourceCompatibility = 1.8
+
+    dependencies {
+        compile 'org.scala-lang:scala-library:2.12.2'
+        testCompile 'org.scalatest:scalatest_2.12:3.0.3'
+        testCompile 'junit:junit:4.12'
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    tasks.withType(ScalaCompile) {
+        options.encoding = "UTF-8"
+    }
+    
+    tasks.withType(Test) {
+        testLogging.showStandardStreams = true
+    }
+}
