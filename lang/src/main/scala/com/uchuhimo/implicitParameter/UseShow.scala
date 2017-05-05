@@ -2,6 +2,7 @@ package com.uchuhimo.implicitParameter
 
 object UseShow {
   def log[A](a: A)(implicit s: Show[A]): Unit = println(s.show(a))
+
   def log2[A: Show](a: A): Unit = println(implicitly[Show[A]].show(a))
 
   import ImplementShow.stringShow
@@ -18,6 +19,8 @@ object UseShow {
     logList(new Derived, new Derived)
 
     log2("test2")
-    log2("test3")(_ => "xx")
+    log2("test3")(new Show[String] {
+      override def show(f: String): String = "xx"
+    })
   }
 }

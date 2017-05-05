@@ -21,13 +21,42 @@ allprojects {
 subprojects {
     apply plugin: "java"
     apply plugin: "scala"
+    apply plugin: "application"
+
+    mainClassName = findProperty("mainClass") ?: ""
 
     sourceCompatibility = 1.8
 
+    ext {
+//        scalaMinorVersion = 11
+//        scalaPatchVersion = 11
+        scalaMinorVersion = 12
+        scalaPatchVersion = 2
+    }
+
     dependencies {
-        compile 'org.scala-lang:scala-library:2.12.2'
-        testCompile 'org.scalatest:scalatest_2.12:3.0.3'
-        testCompile 'junit:junit:4.12'
+        compile "org.scala-lang:scala-library:2.$scalaMinorVersion.$scalaPatchVersion"
+        testCompile "org.scalatest:scalatest_2.$scalaMinorVersion:3.0.3"
+        testCompile "junit:junit:4.12"
+    }
+
+    sourceSets {
+        main {
+            scala {
+                srcDir sourceSets.main.java.srcDirs
+            }
+            java {
+                srcDirs = []
+            }
+        }
+        test {
+            scala {
+                srcDir sourceSets.test.java.srcDirs
+            }
+            java {
+                srcDirs = []
+            }
+        }
     }
 
     tasks.withType(JavaCompile) {
